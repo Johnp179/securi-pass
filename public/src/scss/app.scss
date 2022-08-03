@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+*{
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    margin:0px;
+
+
+}
+
+label, input{
+    display:block;
+    font-size:1.3em;
+}
+
+input{
+    width:100%;
+}
+
+input:focus{
+    outline: #112596 solid 1px;
+}
+
+
+#login, #register{
+    height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+ 
+.forum{
+    background-color: rgb(170, 170, 170);
+    padding:20px;
+    border-radius: 5px;
+    border:2px solid black;
+    
+}
+
+.submit-container{
+    text-align: center;
+}
+
+.submit{
+    font-size:1.5em;
+    padding:5px;
+    border-radius: 0px;
+    border-style:solid;
+}
+
+.submit:hover{
+    background-color: black;
+    color:white;
+    border-color:black;
+}
+
+    
+.errors{
+        font-size:1em;
+        
+}
+
+.error-email-login-server, .error-password-login, 
+.error-username-server, .error-email-register-server,
+.error-attempts{
+    visibility: hidden;
+    color:red;
+    font-weight:bold;
+}
+    
+

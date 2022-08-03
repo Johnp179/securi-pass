@@ -1,0 +1,50 @@
+#home-page{
+    position:absolute;
+    top:0px;
+    background-color: black;
+    text-align: center;
+    width:100vw;
+    height:100vh;
+    color:white;
+ 
+    h1{
+        font-size:3rem;
+        position: relative;
+        top:20vh;
+    }
+
+    #nav-buttons{
+        position:absolute;
+        top:0px;
+        width:100vw;
+        height:100vh;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+      
+
+        button{
+            font-size:2rem;
+            width:200px;
+            padding:20px;
+            display:block;
+            border:solid 2px white;
+            border-radius: none;
+            color:white;
+            background-color: black;
+        }
+        button:hover{
+            border-color: white;
+            color:black;
+            background-color: white;
+
+        }
+
+        button:nth-child(2){
+            margin-top:10px;
+        } 
+
+    }
+
+    
+}
