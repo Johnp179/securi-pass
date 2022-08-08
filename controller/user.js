@@ -67,7 +67,6 @@ router.post("/register", async(req, res)=>{
         if(user) error.email = true;
         if(error.userName || error.email) return res.status(409).send(error);
     
-      
         const hashPassword =  await bcrypt.hash(req.body.password, 10)
         user = new User({ ...req.body, password : hashPassword})
         user = await user.save()

@@ -2,8 +2,7 @@ import React from "react";
 import "./scss/nav.scss"
 
 function Nav(props){
-
-     return(
+    return(
         <div id = "nav">
             <h1>SecuriPass</h1>
             <button onClick={props.displayLogin ? ()=>props.switchPage("register") : ()=>props.switchPage("login") }>

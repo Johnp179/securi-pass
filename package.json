@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon index.js",
+    "client": "npm run start --prefix public",
     "start": "node index.js ",
     "dev": "concurrently -r -k \"npm run server\" \" npm start --prefix public \" ",
     "build": "npm run build --prefix public",

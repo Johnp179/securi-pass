@@ -1,0 +1,17 @@
+#account{
+    padding:30px;
+    display:inline-block;
+    background-color: red;
+    margin:10px;
+
+    .icon-container{
+        text-align: center;
+        font-size: 1.3em;
+        margin-top:2px;
+        
+        .icons{
+            padding:5px;
+        }
+    }
+    
+}

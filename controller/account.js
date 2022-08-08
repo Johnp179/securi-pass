@@ -10,13 +10,12 @@ const {
 const algorithm = 'aes-192-cbc';
 const key = scryptSync(process.env.password, 'salt', 24); //key
 const iv = scryptSync("lkfgdgjdfgsg456y64j", 'salt', 16); // Initialization vector.
-  
 
 
-router.get("/get-all", auth, async(req, res)=>{
-    const decipher = createDecipheriv(algorithm, key, iv);
+router.get("/get-all", async(req, res)=>{
     let accounts = await Account.find({});
     accounts = accounts.map(account=>{
+        const decipher = createDecipheriv(algorithm, key, iv);
         let decryptedPassword = decipher.update(account.password, 'hex', 'utf8');
         decryptedPassword += decipher.final('utf8');
         return {
@@ -26,13 +25,11 @@ router.get("/get-all", auth, async(req, res)=>{
     })  
 
     res.send(accounts);
-            
-
+  
 })
 
 
-router.post("/add", auth,  async(req, res)=>{
-
+router.post("/add", async(req, res)=>{
     const cipher = createCipheriv(algorithm, key, iv);
     let encryptedPassword = cipher.update(req.body.password, 'utf8', 'hex');
     encryptedPassword += cipher.final('hex');
@@ -47,10 +44,17 @@ router.post("/add", auth,  async(req, res)=>{
 })
 
 
-router.put("/update/:id", auth, async(req, res)=>{
+router.put("/update/:id", async(req, res)=>{
+    const cipher = createCipheriv(algorithm, key, iv);
+    let encryptedPassword = cipher.update(req.body.password, 'utf8', 'hex');
+    encryptedPassword += cipher.final('hex');
+    const updatedAccount = {...req.body, 
+        password:encryptedPassword
+    };
+
     try{
-        const doc = Password.findOneAndUpdate({_id: req.params.id}, req.body);
-        doc ? res.status(200).end() : res.status(404).end();
+        const doc =  await Account.findOneAndUpdate({_id: req.params.id}, updatedAccount);
+        doc ? res.status(200).send(doc) : res.status(404).end();
 
     }catch(e){
         res.status(500).send(e);
@@ -58,10 +62,10 @@ router.put("/update/:id", auth, async(req, res)=>{
   })
   
   
-  router.delete("/delete/:id", auth, async(req, res)=>{
+  router.delete("/delete/:id", async(req, res)=>{
     try{
-        const doc = Password.findOneAndDelete({_id:req.params.id});
-        doc ? res.status(200).end() : res.status(404).end();
+        const doc = await Account.findOneAndDelete({_id:req.params.id});
+        doc ? res.status(200).send(doc) : res.status(404).end();
 
     }catch(e){
         res.status(500).send(e);
