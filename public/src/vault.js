@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Account from "./account.js";
+import AddAccount from "./add_account.js";
 import "./scss/vault.scss";
 
 class Vault extends Component{
@@ -12,6 +13,7 @@ class Vault extends Component{
 
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
+        this.addAccount = this.addAccount.bind(this);
 
     }
     async componentDidMount(){
@@ -34,6 +36,39 @@ class Vault extends Component{
 
 
     }
+
+      
+
+    async addAccount(name, password){
+        try{
+            const response = await fetch(`${this.props.baseURL}/account/add`, {
+                method: 'POST',
+                credentials: process.env.NODE_ENV === "development" ? "include" : "same-origin",
+                headers: {
+                  'Content-Type': 'application/json'
+    
+                },
+                body: JSON.stringify({
+                    name,
+                    password
+                })
+            });
+            if(!response.ok) throw {status:response.status};
+            const newAccount = await response.json();
+            this.setState(prevState =>({accounts:[...prevState.accounts, {...newAccount, password}]}));
+            return true; //true means that the database was updated
+
+        }catch(error){
+            if(error.status === 500){
+                console.error("internal server error");
+            }else{
+                console.error(error);
+            }
+            return false; //false means that the database was not updated
+        }
+
+    }
+
 
     async update(name, password , id, index){
         try{
@@ -59,9 +94,14 @@ class Vault extends Component{
             return true; //true means that the database was updated
 
         }catch(error){
-            if(error.status === 500) console.error("internal server error");
-            if(error.status === 404) console.error("Document pertaining to that ID could not be found");
-            console.error(error);
+            if(error.status === 500){
+                console.error("internal server error");
+            }else if(error.status === 404){
+                console.error("Document pertaining to that ID could not be found");
+            }else{
+                console.error(error);
+            }
+
             return false; //false means that the database was not updated
         }
 
@@ -76,17 +116,22 @@ class Vault extends Component{
             });
             if(!response.ok) throw {status:response.status};
             this.setState(prevState =>{
-                const accounts = prevState.accounts.splice(index, 1);
+                prevState.accounts.splice(index, 1);
                 return{
-                    accounts
+                    accounts:prevState.accounts
                 };
             });
             return true; //true means that the database was updated
 
         }catch(error){
-            if(error.status === 500) console.error("internal server error");
-            if(error.status === 404) console.error("Document pertaining to that ID could not be found");
-            console.error(error);
+            if(error.status === 500){
+                console.error("internal server error");
+            }else if(error.status === 404){
+                console.error("Document pertaining to that ID could not be found");
+            }else{
+                console.error(error);
+            }
+            
             return false; //false means that the database was not updated
         }
 
@@ -95,11 +140,14 @@ class Vault extends Component{
     render(){
 
         return(
-            <div id = "vault">
+            <div>
+                <div id = "vault">
                 {this.state.accounts.map((account, index) =>
                     <Account key={account._id} name={account.name} password={account.password} 
                     id={account._id} editSuccess={account.editSuccess} index={index} update={this.update} delete={this.delete} />
                 )}
+                </div>
+                <AddAccount addAccount={this.addAccount} />
             </div>
         )
 

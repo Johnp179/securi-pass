@@ -1,0 +1,64 @@
+#add-account{
+    form{
+        width: 40vw;
+        margin: 0 auto;
+        background-color: grey;
+        
+        .title{
+            background-color: black;
+            color:white;
+            text-align: center;
+            font-size: 1.4em;
+            padding:10px;
+        }
+
+        .body{
+            width:80%;
+            margin: 0 auto;
+            padding: 5px 0;
+        
+
+        }
+
+        .submit-container{
+            text-align: center;
+            margin-top: 5px;
+
+            button{
+                padding:10px;
+                width:36px;
+                margin: 0 2px;
+                border:1px solid black;
+                color:black;
+                background-color:white;
+
+            }
+            button:hover{
+                border:1px solid black;
+                color:white;
+                background-color:black;
+            }
+
+        }
+
+    }
+
+    .trigger-add-account-window {
+        text-align: center;
+
+        button{
+            padding:20px;
+            font-size: 1.4em;
+            border:1px solid black;
+            color:white;
+            background-color:black;
+
+        }
+        button:hover{
+            border:1px solid black;
+            color:black;
+            background-color:white;
+        }
+    }
+
+}

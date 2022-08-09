@@ -35,8 +35,8 @@ router.post("/add", async(req, res)=>{
     encryptedPassword += cipher.final('hex');
     const account = new Account({name:req.body.name, password: encryptedPassword});
     try{
-        await account.save();
-        res.status(201).end();
+        const doc = await account.save();
+        res.status(201).send(doc);
     }catch(e){
         res.status(500).send(e);
     }
