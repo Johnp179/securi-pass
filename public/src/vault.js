@@ -88,7 +88,6 @@ class Vault extends Component{
             this.setState(prevState =>{
                 prevState.accounts[index].name = name;
                 prevState.accounts[index].password = password;
-                prevState.accounts[index].editSuccess = true;
                 return {accounts:prevState.accounts};
             });
             return true; //true means that the database was updated
@@ -142,10 +141,10 @@ class Vault extends Component{
         return(
             <div>
                 <div id = "vault">
-                {this.state.accounts.map((account, index) =>
-                    <Account key={account._id} name={account.name} password={account.password} 
-                    id={account._id} editSuccess={account.editSuccess} index={index} update={this.update} delete={this.delete} />
-                )}
+                    {this.state.accounts.map((account, index) =>
+                        <Account key={account._id} name={account.name} password={account.password} 
+                        id={account._id} index={index} update={this.update} delete={this.delete} />
+                    )}
                 </div>
                 <AddAccount addAccount={this.addAccount} />
             </div>

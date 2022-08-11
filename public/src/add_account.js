@@ -22,10 +22,9 @@ class AddAccount extends Component{
     handleChange(e){
         this.setState({[e.target.name]:e.target.value});
     }
-    async submitForm(e){
-        console.log(e.target);
-        e.preventDefault();
-        // const success = await this.props.addAccount(this.state.name, this.state.password);
+    async submitForm(){
+        const success = await this.props.addAccount(this.state.name, this.state.password);
+        //hand failure
  
     }
 
@@ -33,7 +32,7 @@ class AddAccount extends Component{
     render(){
 
         const form = (
-            <form onSubmit={this.submitForm}>
+            <div className="form">
                 <div className="title">Add Account</div>
                 <div className="body">
                     <label>Name</label>
@@ -41,13 +40,13 @@ class AddAccount extends Component{
                     <label>Password</label>
                     <input value={this.state.password} name="password" onChange={this.handleChange} />
                     <div className="submit-container">
-                        <button type="submit" value="submit"> <FontAwesomeIcon className="icons"  icon={solid('check')} /></button>
+                        <button onClick={this.submitForm} > <FontAwesomeIcon className="icons"  icon={solid('check')} /></button>
                         {/* <button > <FontAwesomeIcon className="icons"  icon={solid('xmark')} 
                             onClick={()=>this.setState({displayPostForm:false})} />
                         </button> */}
                     </div>
                 </div>
-        </form>
+            </div>
         );
 
         const buttonContainter = (

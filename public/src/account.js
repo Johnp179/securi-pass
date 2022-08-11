@@ -10,37 +10,29 @@ class Account extends Component{
         this.state = {
             name: props.name,
             password: props.password,
-            id:props.id,
-            index:props.index,
             edit:false,
             delete: false,
     
    
         };
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.updateAccount = this.updateAccount.bind(this);
         this.deleteAccount = this.deleteAccount.bind(this);
     }
 
-    handleNameChange(e){
-        this.setState({name:e.target.value});
+    handleChange(e){
+        this.setState({[e.target.name]:e.target.value});
     }
-
-    handlePasswordChange(e){
-        this.setState({password:e.target.value});
-    }
-
 
     async updateAccount(){
-        const success = await this.props.update(this.state.name, this.state.password, this.state.id, this.state.index);
+        const success = await this.props.update(this.state.name, this.state.password, this.props.id, this.props.index);
         if(success) this.setState({edit:false});
         
         
     }
 
     async deleteAccount(){
-        const success = await this.props.delete(this.state.id, this.state.index);
+        const success = await this.props.delete(this.props.id, this.props.index);
         if(success) this.setState({delete:false});
          
     }
@@ -54,29 +46,23 @@ class Account extends Component{
         if(this.state.edit){
             return (
                     <div>
-                        <FontAwesomeIcon className="icons"  icon={solid('floppy-disk')}
-                         onClick={this.updateAccount} />
-                        <FontAwesomeIcon className="icons"  icon={solid('rectangle-xmark')} 
-                        onClick={()=>this.setState({edit:false})} />
+                        <button onClick={this.updateAccount} ><FontAwesomeIcon   icon={solid('floppy-disk')}/> </button>
+                        <button onClick={()=>this.setState({edit:false})}><FontAwesomeIcon icon={solid('rectangle-xmark')}/></button>
                     </div>
             );
         }
         if(this.state.delete){
             return (
                     <div>
-                        <FontAwesomeIcon className="icons"  icon={solid('check')} 
-                        onClick={this.deleteAccount} />
-                        <FontAwesomeIcon className="icons"  icon={solid('xmark')} 
-                        onClick={()=>this.setState({delete:false})}/>
+                        <button onClick={this.deleteAccount} ><FontAwesomeIcon  icon={solid('check')} /></button>
+                        <button onClick={()=>this.setState({delete:false})}><FontAwesomeIcon icon={solid('xmark')} /></button>
                     </div>
             );
         }
         return (
             <div>
-                <FontAwesomeIcon className="icons" icon={solid('pen-to-square')} 
-                onClick={()=>this.setState({edit:true})} />
-                <FontAwesomeIcon className="icons"  icon={solid('trash-can')} 
-                onClick={()=>this.setState({delete:true})} />
+                <button onClick={()=>this.setState({edit:true})}><FontAwesomeIcon icon={solid('pen-to-square')} /></button>
+                <button  onClick={()=>this.setState({delete:true})} ><FontAwesomeIcon  icon={solid('trash-can')} /></button>
             </div>
         );
     }
@@ -85,9 +71,9 @@ class Account extends Component{
         return(
             <div id = "account">
                 <label>Name</label>
-                <input value={this.state.name} readOnly={this.state.edit ? false: true}  onChange={this.handleNameChange} />
+                <input value={this.state.name} name="name" readOnly={this.state.edit ? false: true}  onChange={this.handleChange} />
                 <label>Password</label>
-                <input value={this.state.password} readOnly={this.state.edit ? false: true} onChange={this.handlePasswordChange} />
+                <input value={this.state.password} name="password" readOnly={this.state.edit ? false: true} onChange={this.handleChange} />
                 <label>{this.alterEditAndDeleteLabelText()}</label>
                 <div className="icon-container" >
                     {this.generateIcons()}
