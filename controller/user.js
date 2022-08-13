@@ -55,17 +55,18 @@ router.post("/login",async(req, res)=>{
 router.post("/register", async(req, res)=>{
    
     const error = {
-        userName: false,
+        username: false,
         email: false
     };
 
     try{
         let user;
-        user = await User.findOne({name:req.body.name})
-        if(user)error.userName = true;
+        req.body.username = req.body.username.trim(); // remove whitespace
+        user = await User.findOne({username:req.body.username})
+        if(user)error.username = true;
         user = await User.findOne({email:req.body.email});
         if(user) error.email = true;
-        if(error.userName || error.email) return res.status(409).send(error);
+        if(error.username || error.email) return res.status(409).send(error);
     
         const hashPassword =  await bcrypt.hash(req.body.password, 10)
         user = new User({ ...req.body, password : hashPassword})
@@ -88,7 +89,7 @@ router.get("/check-for-logged-in-user", auth, (req, res)=>{
 router.get("/logout",(req, res)=>{
     res.clearCookie('token',{
         httpOnly: true,
-        // secure: true,
+        secure: true,
         sameSite: (process.env.NODE_ENV != "production")? "None": "Strict",
     }).end()
    
@@ -97,20 +98,23 @@ router.get("/logout",(req, res)=>{
 
 function signToken(user, res){
     jwt.sign({
-        userName:user.name,
-        email:user.email
+        username:user.username,
+        email:user.email,
+        ID:user._id
        }, process.env.SECRET, (error, token)=>{
         if(error) return res.status(500).send(error)
         
         res
         .cookie("token",token,{
             httpOnly: true,
-            // secure: true,
+            secure: true,
             sameSite: (process.env.NODE_ENV != "production") ? "None": "Strict",
         })
         .send({
-            userName:user.name,
-            email:user.email
+            username:user.username,
+            email:user.email,
+            ID:user._id
+
         });
     })
 

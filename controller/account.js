@@ -12,8 +12,8 @@ const key = scryptSync(process.env.password, 'salt', 24); //key
 const iv = scryptSync("lkfgdgjdfgsg456y64j", 'salt', 16); // Initialization vector.
 
 
-router.get("/get-all", async(req, res)=>{
-    let accounts = await Account.find({});
+router.get("/get-all/:id", async(req, res)=>{
+    let accounts = await Account.find({userID:req.params.id});
     accounts = accounts.map(account=>{
         const decipher = createDecipheriv(algorithm, key, iv);
         let decryptedPassword = decipher.update(account.password, 'hex', 'utf8');
@@ -29,11 +29,15 @@ router.get("/get-all", async(req, res)=>{
 })
 
 
-router.post("/add", async(req, res)=>{
+router.post("/add/:id", async(req, res)=>{
     const cipher = createCipheriv(algorithm, key, iv);
     let encryptedPassword = cipher.update(req.body.password, 'utf8', 'hex');
     encryptedPassword += cipher.final('hex');
-    const account = new Account({name:req.body.name, password: encryptedPassword});
+    const account = new Account({
+        name:req.body.name, 
+        password: encryptedPassword,
+        userID:req.params.id
+    });
     try{
         const doc = await account.save();
         res.status(201).send(doc);

@@ -5,6 +5,7 @@ import HomePage from "./home_page.js"
 import Login from "./login.js";
 import Register from "./register.js";
 import Vault from "./vault.js";
+import { faBedPulse, faLessThan } from "@fortawesome/free-solid-svg-icons";
 
 
 class App extends Component{
@@ -15,49 +16,76 @@ class App extends Component{
             router:{
                 homePage:false,
                 login: false,
-                register: false,
-                },
-            isLoggedIn:true,
+                register: true,
+                vault:false
+            },
+            username: "",
+            email: "",
+            userID:"",
     
         };
 
         this.baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
         this.switchPage = this.switchPage.bind(this);
+        this.loginUser = this.loginUser.bind(this);
 
     }
   
     switchPage(dest){
-        let result;
-
+      
         if(dest === "register"){
-            result = {
-                homePage:false,
-                login:false,
-                register: true
-            };
+            return this.setState({
+                router:{
+                    homePage:false,
+                    login:false,
+                    register: true,
+                    vault:false
+                }
+            });
         }
-        else if(dest === "login"){
-            result = {
-                homePage:false,
-                login:true,
-                register: false
-            };
+        if(dest === "login"){
+            return this.setState({
+                router:{
+                    homePage:false,
+                    login:true,
+                    register: false,
+                    vault:false
+
+                }
+            });
+        }
+        if(dest === "vault"){
+            return this.setState({
+                router:{
+                    homePage:false,
+                    login:false,
+                    register: false,
+                    vault:true
+
+                }
+            });
         }
 
+     
+    }
+
+    loginUser(username, email, userID){
         this.setState({
-            router:result
-        });
+            username,
+            email,
+            userID
+        })
     }
 
     render(){
 
         return(
         <div className = "app">
-            <Nav  displayLogin={this.state.router.login} switchPage={this.switchPage} />
+            <Nav router={this.state.router} switchPage={this.switchPage} />
             {this.state.router.homePage && <HomePage switchPage={this.switchPage} />}
             {this.state.router.login && <Login />}
-            {this.state.router.register && <Register />}
-            {this.state.isLoggedIn && <Vault baseURL={this.baseURL} />}
+            {this.state.router.register && <Register baseURL={this.baseURL} switchPage={this.switchPage} loginUser={this.loginUser} />}
+            {this.state.router.vault && <Vault userID={this.state.userID} baseURL={this.baseURL} />}
         </div>
     
         );

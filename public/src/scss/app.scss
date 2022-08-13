@@ -27,45 +27,84 @@ input:focus{
     display:flex;
     justify-content: center;
     align-items: center;
+
+    form{
+        background-color: rgb(170, 170, 170);
+        padding:20px;
+        border-radius: 5px;
+        border:2px solid black;
+        
+        .error-container{
+            height:50px;
+
+            label{
+                font-size:1em;
+            }
+
+            .error{
+                color:red;
+                font-weight:bold;
+            }
+
+
+        }
+    
+        .submit-container{
+            text-align: center;
+
+            button{
+                font-size:1.5em;
+                padding:5px;
+                border-radius: 0px;
+                border-style:solid;
+            }
+            button:hover{
+                background-color: black;
+                color:white;
+                border-color:black;
+            }
+        }
+
+    }
 }
  
-.forum{
-    background-color: rgb(170, 170, 170);
-    padding:20px;
-    border-radius: 5px;
-    border:2px solid black;
+// .auth-form{
+//     background-color: rgb(170, 170, 170);
+//     padding:20px;
+//     border-radius: 5px;
+//     border:2px solid black;
     
-}
+// }
 
-.submit-container{
-    text-align: center;
-}
+// .submit-container{
+//     text-align: center;
+// }
 
-.submit{
-    font-size:1.5em;
-    padding:5px;
-    border-radius: 0px;
-    border-style:solid;
-}
+// .submit{
+//     font-size:1.5em;
+//     padding:5px;
+//     border-radius: 0px;
+//     border-style:solid;
+// }
 
-.submit:hover{
-    background-color: black;
-    color:white;
-    border-color:black;
-}
+// .submit:hover{
+//     background-color: black;
+//     color:white;
+//     border-color:black;
+// }
 
     
-.errors{
-        font-size:1em;
+// .errors{
+//     font-size:1em;
         
-}
+// }
 
-.error-email-login-server, .error-password-login, 
-.error-username-server, .error-email-register-server,
-.error-attempts{
-    visibility: hidden;
-    color:red;
-    font-weight:bold;
-}
+// .error-email-login-server, .error-password-login, 
+// .error-username-server, .error-email-register-server,
+// .error-attempts{
+//     display:none;
+//     color:red;
+//     font-weight:bold;
+// }
     
 

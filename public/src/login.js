@@ -15,19 +15,19 @@ class Login extends Component{
 
         return(
             <div id = "login">
-                    <div className = "forum">
+                    <div className = "auth-form">
                         <div>
                             <label>Email</label>
                             <input type="text" id = "email-login" /> 
-                                <label className = "errors error-email-login" >Email must be in a vaild format</label>
-                                <label className = "errors error-email-login-server" >That email does not exist</label> 
+                            <label className = "errors error-email-login" >Email must be in a vaild format</label>
+                            <label className = "errors error-email-login-server" >That email does not exist</label> 
                         </div>
         
                         <div>
                             <label>Password</label>
                             <input type="password" id = "password-login" /> 
-                                <label className = "errors error-password-login" >Incorrect Password</label>
-                                <label className = "errors error-attempts">Too many login attempts, please wait</label>
+                            <label className = "errors error-password-login" >Incorrect Password</label>
+                            <label className = "errors error-attempts">Too many login attempts, please wait</label>
                         </div>
                 
                         <div className = "submit-container"> 

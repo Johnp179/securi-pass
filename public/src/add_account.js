@@ -24,7 +24,7 @@ class AddAccount extends Component{
     }
     async submitForm(){
         const success = await this.props.addAccount(this.state.name, this.state.password);
-        //hand failure
+        //handle failure
  
     }
 
@@ -32,7 +32,7 @@ class AddAccount extends Component{
     render(){
 
         const form = (
-            <div className="form">
+            <div className="add-account-form">
                 <div className="title">Add Account</div>
                 <div className="body">
                     <label>Name</label>

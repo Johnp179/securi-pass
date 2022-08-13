@@ -18,7 +18,7 @@ class Vault extends Component{
     }
     async componentDidMount(){
         try{
-            const response = await fetch(`${this.props.baseURL}/account/get-all`);
+            const response = await fetch(`${this.props.baseURL}/account/get-all/${this.props.userID}`);
             if(!response.ok) throw {status:response.status};
             const accounts = await response.json();
             accounts.map(account => {
@@ -50,7 +50,9 @@ class Vault extends Component{
                 },
                 body: JSON.stringify({
                     name,
-                    password
+                    password,
+                    ID:this.props.userID
+
                 })
             });
             if(!response.ok) throw {status:response.status};
