@@ -22,7 +22,7 @@ input:focus{
 }
 
 
-#login, #register{
+#login, #register, #profile{
     height:100vh;
     display:flex;
     justify-content: center;
@@ -67,44 +67,31 @@ input:focus{
 
     }
 }
- 
-// .auth-form{
-//     background-color: rgb(170, 170, 170);
-//     padding:20px;
-//     border-radius: 5px;
-//     border:2px solid black;
+
+
+@media only screen and (min-width: 600px){
+    // #nav{
+    //     background-color: red;
+
+    //     #desktop-menu{
+    //         display:block;
+    //     }
+
+    //     #mobile-button{
+    //         display:none;
     
-// }
+    //     }
 
-// .submit-container{
-//     text-align: center;
-// }
+    // }
 
-// .submit{
-//     font-size:1.5em;
-//     padding:5px;
-//     border-radius: 0px;
-//     border-style:solid;
-// }
+    // #login{
+    //     background-color: red;
+    // }
 
-// .submit:hover{
-//     background-color: black;
-//     color:white;
-//     border-color:black;
-// }
 
-    
-// .errors{
-//     font-size:1em;
-        
-// }
+}
 
-// .error-email-login-server, .error-password-login, 
-// .error-username-server, .error-email-register-server,
-// .error-attempts{
-//     display:none;
-//     color:red;
-//     font-weight:bold;
-// }
-    
+
+
+
 

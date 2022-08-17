@@ -46,7 +46,7 @@ class Account extends Component{
         if(this.state.edit){
             return (
                     <div>
-                        <button onClick={this.updateAccount} ><FontAwesomeIcon   icon={solid('floppy-disk')}/> </button>
+                        <button onClick={this.updateAccount} ><FontAwesomeIcon  icon={solid('floppy-disk')}/> </button>
                         <button onClick={()=>this.setState({edit:false})}><FontAwesomeIcon icon={solid('rectangle-xmark')}/></button>
                     </div>
             );

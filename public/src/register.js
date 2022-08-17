@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {isEmail} from "validator"
+import {isEmail} from "validator";
 import "./scss/register.scss";
 
 
@@ -196,30 +196,23 @@ class Register extends Component{
 
         // submit the form to the server
         try{
-            const response = await fetch(`${this.props.baseURL}/user/register`, {
-                method: 'POST',
-                credentials: process.env.NODE_ENV === "development" ? "include" : "same-origin",
-                headers: {
-                  'Content-Type': 'application/json'
-    
-                },
-                body: JSON.stringify({
-                    username:this.state.username,
-                    email: this.state.email,
-                    password: this.state.password
-                })
+            const response = await this.props.postData("user/register",{
+                username:this.state.username,
+                email: this.state.email,
+                password: this.state.password
             });
+                
             if(!response.ok){
                 const error = await response.json();
                 throw {
                     ...error,
                     status:response.status
                 };
+           
 
             } 
             const user = await response.json();
-            this.props.loginUser(user.username, user.password, user.ID);
-            this.props.switchPage("vault");
+            this.props.loginUser(user);
           
 
         }catch(error){

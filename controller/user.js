@@ -45,7 +45,8 @@ router.post("/login",async(req, res)=>{
         res.status(401).send(error);
 
     }catch(e){
-        res.status(500).send(e);
+        res.status(500).end();
+        console.error(e);
     }
             
 
@@ -61,8 +62,9 @@ router.post("/register", async(req, res)=>{
 
     try{
         let user;
+        console.log(req.body.username);
         req.body.username = req.body.username.trim(); // remove whitespace
-        user = await User.findOne({username:req.body.username})
+        user = await User.findOne({username:req.body.username});
         if(user)error.username = true;
         user = await User.findOne({email:req.body.email});
         if(user) error.email = true;
@@ -75,14 +77,16 @@ router.post("/register", async(req, res)=>{
          
 
     }catch(e){
-        res.status(500).send(e)
+        res.status(500).end();
+        console.error(e);
     }
 
 })
 
 
 router.get("/check-for-logged-in-user", auth, (req, res)=>{
-   res.send(req.user)
+    res.send(req.user)
+    
 })
 
 
@@ -100,7 +104,7 @@ function signToken(user, res){
     jwt.sign({
         username:user.username,
         email:user.email,
-        ID:user._id
+        userID:user._id
        }, process.env.SECRET, (error, token)=>{
         if(error) return res.status(500).send(error)
         
@@ -113,7 +117,7 @@ function signToken(user, res){
         .send({
             username:user.username,
             email:user.email,
-            ID:user._id
+            userID:user._id
 
         });
     })

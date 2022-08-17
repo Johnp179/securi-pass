@@ -18,18 +18,14 @@ class Vault extends Component{
     }
     async componentDidMount(){
         try{
-            const response = await fetch(`${this.props.baseURL}/account/get-all/${this.props.userID}`);
+            const response = await this.props.getData(`account/get-all/${this.props.userID}`);
             if(!response.ok) throw {status:response.status};
             const accounts = await response.json();
-            accounts.map(account => {
-                account.editSuccess = false;
-                return account;
-            })
             this.setState({accounts});
 
         }catch(error){
             if(error.status === 500) return console.error("internal server error");
-            if(error.status === 401) return console.error("unauthorized");
+            if(error.status === 403) return console.error("Forbidden");
             console.error(error);
          
         }
@@ -41,19 +37,9 @@ class Vault extends Component{
 
     async addAccount(name, password){
         try{
-            const response = await fetch(`${this.props.baseURL}/account/add`, {
-                method: 'POST',
-                credentials: process.env.NODE_ENV === "development" ? "include" : "same-origin",
-                headers: {
-                  'Content-Type': 'application/json'
-    
-                },
-                body: JSON.stringify({
-                    name,
-                    password,
-                    ID:this.props.userID
-
-                })
+            const response = await this.props.postData(`account/add/${this.props.userID}`,{
+                name,
+                password
             });
             if(!response.ok) throw {status:response.status};
             const newAccount = await response.json();
@@ -74,7 +60,7 @@ class Vault extends Component{
 
     async update(name, password , id, index){
         try{
-            const response = await fetch(`${this.props.baseURL}/account/update/${id}`, {
+            const response = await fetch(`${this.props.baseURL}account/update/${id}`, {
                 method: 'PUT',
                 credentials: process.env.NODE_ENV === "development" ? "include" : "same-origin",
                 headers: {
@@ -110,7 +96,7 @@ class Vault extends Component{
 
     async delete(id, index){
         try{
-            const response = await fetch(`${this.props.baseURL}/account/delete/${id}`, {
+            const response = await fetch(`${this.props.baseURL}account/delete/${id}`, {
                 method: 'DELETE',
                 credentials: process.env.NODE_ENV === "development" ? "include" : "same-origin",
     
@@ -141,8 +127,8 @@ class Vault extends Component{
     render(){
 
         return(
-            <div>
-                <div id = "vault">
+            <div id="vault">
+                <div id="user-accounts">
                     {this.state.accounts.map((account, index) =>
                         <Account key={account._id} name={account.name} password={account.password} 
                         id={account._id} index={index} update={this.update} delete={this.delete} />

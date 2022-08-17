@@ -1,6 +1,10 @@
 #vault{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    position:relative;
+    top:60px;
+    #user-accounts{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 
 }

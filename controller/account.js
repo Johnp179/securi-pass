@@ -13,18 +13,26 @@ const iv = scryptSync("lkfgdgjdfgsg456y64j", 'salt', 16); // Initialization vect
 
 
 router.get("/get-all/:id", async(req, res)=>{
-    let accounts = await Account.find({userID:req.params.id});
-    accounts = accounts.map(account=>{
-        const decipher = createDecipheriv(algorithm, key, iv);
-        let decryptedPassword = decipher.update(account.password, 'hex', 'utf8');
-        decryptedPassword += decipher.final('utf8');
-        return {
-            ...account.toObject(),
-            password: decryptedPassword
-        };
-    })  
 
-    res.send(accounts);
+    try{
+        let accounts = await Account.find({userID:req.params.id});
+        accounts = accounts.map(account=>{
+            const decipher = createDecipheriv(algorithm, key, iv);
+            let decryptedPassword = decipher.update(account.password, 'hex', 'utf8');
+            decryptedPassword += decipher.final('utf8');
+            return {
+                ...account.toObject(),
+                password: decryptedPassword
+            };
+        }) 
+
+        res.send(accounts);
+    }catch(e){
+        res.status(500).end();
+        console.error(e);
+
+    }
+
   
 })
 
@@ -42,7 +50,8 @@ router.post("/add/:id", async(req, res)=>{
         const doc = await account.save();
         res.status(201).send(doc);
     }catch(e){
-        res.status(500).send(e);
+        res.status(500).end();
+        console.error(e);
     }
    
 })
@@ -61,7 +70,8 @@ router.put("/update/:id", async(req, res)=>{
         doc ? res.status(200).send(doc) : res.status(404).end();
 
     }catch(e){
-        res.status(500).send(e);
+        res.status(500).end();
+        console.error(e);
     }
   })
   
@@ -72,8 +82,13 @@ router.put("/update/:id", async(req, res)=>{
         doc ? res.status(200).send(doc) : res.status(404).end();
 
     }catch(e){
-        res.status(500).send(e);
+        res.status(500).end();
+        console.error(e);
     }
+
+   
+
+    
   })
   
 
