@@ -1,28 +1,74 @@
 #account{
-    padding:30px;
-    display:inline-block;
+    --border-radius: 0.3em;
+
+    padding:1em;
     background-color: black;
-    margin:10px;
+    margin-top:1em;
     color:white;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
+    width:90%;
+    color:white;
+
+    label, input{
+        display:block;
+    }
+
+    .inputs{
+        width:80%;
+        margin: 0 auto;
+
+        input{
+            width:100%;
+        }
+
+        label:nth-child(3){
+            margin-top:0.5em;
+
+        }
+
+    }
+  
+    .edit-and-delete-label{
+        text-align: center;
+        height:1.5em;
+        margin:0.5em 0;
+    }
 
     .icon-container{
         text-align: center;
-        margin-top:10px;
+        // margin:0 0.5em;
         
         button{
-            padding:5px;
-            border:2px solid white;
+            padding:0.35em;
+            border:1px solid white;
+            border-radius: var(--border-radius);
             background-color:black;
-            color:white;
+            color:inherit;
             font-size: 1.2em;
-            width:34px;
-            margin: 0 2px;
+            width:2em;
+            margin: 0 0.5em;
+
+            &:hover{
+                background-color:white;
+                color:black;
+            }
         }
-        button:hover{
-            background-color:white;
-            color:black;
+    }
+
+
+    @media only screen and (min-width: 500px){
+        &{
+            width:45%;
         }
+ 
+    }
+
+    @media only screen and (min-width: 900px){
+        &{
+            width:30%;
+        }
+    
+ 
     }
     
 }

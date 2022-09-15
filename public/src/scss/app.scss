@@ -5,40 +5,46 @@
     font-family: 'Roboto', sans-serif;
     margin:0px;
 
-
 }
-
-label, input{
-    display:block;
-    font-size:1.3em;
-}
-
-input{
-    width:100%;
-}
-
-input:focus{
-    outline: #112596 solid 1px;
-}
-
 
 #login, #register, #profile{
     height:100vh;
     display:flex;
     justify-content: center;
     align-items: center;
+    font-size:1.5rem;
+    --border-radius: 0.2em;
 
     form{
         background-color: rgb(170, 170, 170);
-        padding:20px;
-        border-radius: 5px;
+        padding:1.5em;
+        border-radius: var(--border-radius);
         border:2px solid black;
+
+        .section{
+            width:12em;
+        }
+
+        label, input{
+            display:block;
+        }
+
+
+        input{
+            width:100%;
+            font-size:0.8em;
+        }
+
+        input:focus{
+            outline:none;
+            box-shadow:0 0 10px black;
+        }
         
         .error-container{
-            height:50px;
+            height:2.5em;
 
             label{
-                font-size:1em;
+                font-size: 0.7em;
             }
 
             .error{
@@ -48,50 +54,24 @@ input:focus{
 
 
         }
-    
-        .submit-container{
-            text-align: center;
 
-            button{
-                font-size:1.5em;
-                padding:5px;
-                border-radius: 0px;
-                border-style:solid;
-            }
-            button:hover{
+ 
+        button{
+            font-size:1.2em;
+            padding:0.5em;
+            border-radius: var(--border-radius);
+            border-style:solid;
+            display:block;
+            margin: 0 auto;
+            
+            &:hover{
                 background-color: black;
                 color:white;
                 border-color:black;
             }
         }
-
     }
-}
-
-
-@media only screen and (min-width: 600px){
-    // #nav{
-    //     background-color: red;
-
-    //     #desktop-menu{
-    //         display:block;
-    //     }
-
-    //     #mobile-button{
-    //         display:none;
     
-    //     }
-
-    // }
-
-    // #login{
-    //     background-color: red;
-    // }
-
-
 }
-
-
-
 
 

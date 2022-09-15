@@ -25,7 +25,7 @@ server.use("/user", userRoutes);
 
 
 if(process.env.NODE_ENV === "production"){
-  server.use(express.static("public/dist"));
+  server.use(" ",express.static("public/dist"));
   server.get("*",(req, res)=>{
     res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
   })

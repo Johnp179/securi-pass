@@ -1,6 +1,11 @@
 #vault{
     position:relative;
-    top:60px;
+    top:50px;
+    max-width: 1200px;
+    background-color: rgb(187, 187, 187);
+    margin: 0 auto;
+    min-height: 100vh;
+    max-height: 100%;
     #user-accounts{
         display: flex;
         justify-content: center;

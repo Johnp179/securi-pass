@@ -1,6 +1,5 @@
 const path = require("path")
 
-
 module.exports = {
     entry: {
         app: './index.js',
@@ -10,7 +9,9 @@ module.exports = {
     output:{
         path: path.resolve(__dirname, "dist/"),
         filename: "[name].bundle.js",
+        publicPath:"/",
         clean:true,
+
     },
 
     module:{
@@ -51,5 +52,5 @@ module.exports = {
 
       
     },
-    
+
 }

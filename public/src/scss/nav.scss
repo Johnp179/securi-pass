@@ -3,9 +3,13 @@
     background-color: black;
     position: fixed;
     width:100%;
-    padding: 8px 0px;
+    padding:0.5em 0; 
     color:white;
     z-index: 5;
+
+    h1{
+        font-size: 2.5em;
+    }
 
     #logged-out-button{
         color:white;
@@ -15,7 +19,7 @@
         top:0px;
         height: 100%;
         border:none;
-        font-size: 1.2em;
+        font-size: 1.8em;
 
         &:hover{
             color:black;
@@ -30,31 +34,29 @@
         position:absolute;
         right:0;
         top:0;
-        width:88px;
+        background-color: inherit;
 
         &:hover #dropdown{
             display:block;
         }
 
-        button{
-         
+        .user-icon{
             font-size: 2.5em;
-            height:54px;
-            background-color: inherit;
-            color:white;
+            background-color: black;
+            color:white; 
             border:none;
+            padding:0.2em;
+            width:2.5em;
 
         }
 
 
         #dropdown{
-            color:white;
             font-size: 1.5em;
-            background-color: black;
             display:none;
-
+     
             div{
-                padding:10px;
+                padding:0.5em;
 
                 &:hover{
                     background-color: white;
@@ -66,12 +68,11 @@
     }
 
     #mobile-button{
-        display:block;
         position:absolute;
         top:0;
         right:0;
         font-size: 2.5em;
-        height:55px;
+        padding:0.2em;
         background-color: inherit;
         color:white;
         border:none;
@@ -96,7 +97,7 @@
         }
     }
 
-    @media only screen and (min-width: 600px){
+    @media (min-width: 600px){
         #desktop-menu{
             display:block;
         }
