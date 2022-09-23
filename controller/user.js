@@ -6,6 +6,47 @@ const User = require("../models/User.js")
 const auth = require("../authenticate.js");
 
 
+router.get("/get-all", async(req, res) => {
+
+    try{
+        const users = await User.find({});
+        res.send(users);
+    }catch(e){
+        res.status(500).end();
+        console.error(e);
+
+    }
+
+});
+
+router.delete("/delete-all", async(req, res) => {
+
+    try{
+        const deletedCount = await User.deleteMany({});
+        res.send(deletedCount);
+    }catch(e){
+        res.status(500).end();
+        console.error(e);
+    }
+
+});
+
+router.delete("/delete/:id", async(req, res) => {
+
+    try{
+        const doc = await User.findOneAndDelete({_id:req.params.id});
+        doc ? res.status(200).send(doc) : res.status(404).end();
+
+    }catch(e){
+        res.status(500).end();
+        console.error(e);
+    }
+
+
+});
+
+
+const waitInterval =  60*60*1000; // 1hour
 router.post("/login",async(req, res)=>{
     const error = {
         email: false,
@@ -20,7 +61,6 @@ router.post("/login",async(req, res)=>{
             error.email = true;
             return res.status(401).send(error);
         }
-        const waitInterval =  1*60*1000; // 1 minute
 
         if(Date.now() - user.startTime > waitInterval){
             user.loginAttempts = 0;
@@ -34,15 +74,14 @@ router.post("/login",async(req, res)=>{
         }
     
         const match = await bcrypt.compare(req.body.password, user.password);
-    
         if(match) return signToken(user, res);
-        
         
         user.loginAttempts += 1;
         await user.save();
-    
         error.password = true;
         res.status(401).send(error);
+
+
 
     }catch(e){
         res.status(500).end();
@@ -54,7 +93,6 @@ router.post("/login",async(req, res)=>{
 
 
 router.post("/register", async(req, res)=>{
-   
     const error = {
         username: false,
         email: false
@@ -62,7 +100,6 @@ router.post("/register", async(req, res)=>{
 
     try{
         let user;
-        console.log(req.body.username);
         req.body.username = req.body.username.trim(); // remove whitespace
         user = await User.findOne({username:req.body.username});
         if(user)error.username = true;
@@ -93,8 +130,8 @@ router.get("/check-for-logged-in-user", auth, (req, res)=>{
 router.get("/logout",(req, res)=>{
     res.clearCookie('token',{
         httpOnly: true,
-        secure: true,
-        sameSite: (process.env.NODE_ENV != "production")? "None": "Strict",
+        secure: process.env.NODE_ENV !== "production"? false: true,
+        sameSite: "Strict"
     }).end()
    
 })
@@ -111,8 +148,10 @@ function signToken(user, res){
         res
         .cookie("token",token,{
             httpOnly: true,
-            secure: true,
-            sameSite: (process.env.NODE_ENV != "production") ? "None": "Strict",
+            secure: process.env.NODE_ENV !== "production"? false: true,
+            sameSite:"Strict",
+          
+     
         })
         .send({
             username:user.username,

@@ -1,13 +1,13 @@
 #account{
-    --border-radius: 0.3em;
-
     padding:1em;
     background-color: black;
-    margin-top:1em;
+    margin:7.5%;
     color:white;
-    border-radius: var(--border-radius);
-    width:90%;
+    border-radius: 1em;
+    width:85%;
     color:white;
+
+
 
     label, input{
         display:block;
@@ -19,6 +19,18 @@
 
         input{
             width:100%;
+            border:1px solid black;
+            font-size:0.9em;
+            padding:0.2em;
+      
+        }
+
+        input:focus{
+            outline:none;
+        }
+
+        input.editable:focus{
+            // possibly add something here later
         }
 
         label:nth-child(3){
@@ -26,22 +38,41 @@
 
         }
 
+        .password-container{
+            display:flex;
+     
+
+            button{
+                background-color: white;
+                border:1px solid black;
+                border-left:none;
+                position: relative;
+                right:1px;
+                font-size: 0.9em;
+            }
+
+     
+        }
+
     }
   
     .edit-and-delete-label{
         text-align: center;
-        height:1.5em;
         margin:0.5em 0;
+    }
+    
+    .error-message{
+        color:red;
+        text-align: center;
     }
 
     .icon-container{
         text-align: center;
-        // margin:0 0.5em;
         
         button{
             padding:0.35em;
             border:1px solid white;
-            border-radius: var(--border-radius);
+            border-radius:0.5em;
             background-color:black;
             color:inherit;
             font-size: 1.2em;
@@ -56,19 +87,18 @@
     }
 
 
-    @media only screen and (min-width: 500px){
-        &{
-            width:45%;
-        }
+    @media (min-width: 450px){
+        width:45%;
+        margin:1.5%;
+        
  
     }
 
-    @media only screen and (min-width: 900px){
-        &{
-            width:30%;
-        }
-    
- 
+    @media (min-width: 900px){
+        width:30%;
+        margin:1.5%;
+        
     }
+
     
 }

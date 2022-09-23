@@ -12,8 +12,8 @@ const Vault = ({getData, postData, updateData, deleteData, userID}) => {
         const fetchAccounts = async() =>{
             try{
                 if(userID){
-                    const response = await getData(`account/get-all/${userID}`);
-                    if(!response.ok) throw new Error(response.status);
+                    const response = await getData(`account/get-all-by-user/${userID}`);
+                    if(!response.ok) throw new Error(`Server responded with status code: ${response.status}`);
                     const accounts = await response.json();
                     setAccounts(accounts);
                 }
@@ -35,17 +35,13 @@ const Vault = ({getData, postData, updateData, deleteData, userID}) => {
                 name,
                 password
             });
-            if(!response.ok) throw {status:response.status};
+            if(!response.ok) throw new Error(`Server responded with status code: ${response.status}`);
             const newAccount = await response.json();
             setAccounts(prevAccounts => [...prevAccounts, {...newAccount, password}])
             return true; //true means that the database was updated
 
         }catch(error){
-            if(error.status === 500){
-                console.error("internal server error");
-            }else{
-                console.error(error);
-            }
+            console.error(error);
             return false; //false means that the database was not updated
         }
 
@@ -58,8 +54,7 @@ const Vault = ({getData, postData, updateData, deleteData, userID}) => {
                 name,
                 password
             });
-            if(!response.ok) throw {status:response.status};
-        
+            if(!response.ok) throw new Error(`Server responded with status code: ${response.status}`);
             setAccounts(prevAccounts =>{
                 prevAccounts[index].name = name;
                 prevAccounts[index].password = password;
@@ -69,14 +64,7 @@ const Vault = ({getData, postData, updateData, deleteData, userID}) => {
             return true; //true means that the database was updated
 
         }catch(error){
-            if(error.status === 500){
-                console.error("internal server error");
-            }else if(error.status === 404){
-                console.error("Document pertaining to that ID could not be found");
-            }else{
-                console.error(error);
-            }
-
+            console.error(error);
             return false; //false means that the database was not updated
         }
 
@@ -86,20 +74,12 @@ const Vault = ({getData, postData, updateData, deleteData, userID}) => {
 
         try{
             const response = await deleteData(`account/delete/${id}`);
-            if(!response.ok) throw {status:response.status};
-          
+            if(!response.ok) throw new Error(`Server responded with status code: ${response.status}`);
             setAccounts(prevAccounts => prevAccounts.filter((account, index) => index != indexToRemove ))
             return true; //true means that the database was updated
 
         }catch(error){
-            if(error.status === 500){
-                console.error("internal server error");
-            }else if(error.status === 404){
-                console.error("Document pertaining to that ID could not be found");
-            }else{
-                console.error(error);
-            }
-            
+            console.error(error);
             return false; //false means that the database was not updated
         }
 

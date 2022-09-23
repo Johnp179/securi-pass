@@ -1,0 +1,93 @@
+#loading-animation{
+
+    --gapWidth: calc(var(--containerWidth) / 8);
+    --barWidth: calc((var(--containerWidth) - 4 * var(--gapWidth)) / 3);
+    --barOneLeft: var(--gapWidth);
+    --barTwoLeft: calc(2 * var(--gapWidth) + var(--barWidth));
+    --barThreeLeft: calc(3 * var(--gapWidth) + 2 * var(--barWidth));
+
+    --initialGapHeight: calc(var(--containerHeight) / 10);
+    --initialBarHeight: calc(var(--containerHeight) - 2 * var(--initialGapHeight));
+    --finalBarHeight: calc(var(--initialBarHeight) / 2 );
+    --finalGapHeight: calc((var(--containerHeight) - var(--finalBarHeight)) / 2);
+
+    margin: 0 auto;
+    position: relative;
+    width: var(--containerWidth);
+    height: var(--containerHeight);
+
+    div {
+        display: inline-block;
+        position: absolute;
+        width: var(--barWidth);
+        background-color: white;
+        animation: loading 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+    }
+
+    div:nth-child(1) {
+        left: var(--barOneLeft);
+        animation-delay: -0.24s;
+    }
+
+    div:nth-child(2) {
+        left: var(--barTwoLeft);
+        animation-delay: -0.12s;
+    }
+
+    div:nth-child(3) {
+        left: var(--barThreeLeft);
+        animation-delay: 0;
+    }
+
+    @keyframes loading {
+        0% {
+            top: var(--initialGapHeight);
+            height: var(--initialBarHeight);
+        }
+
+        50%, 100% {
+            top: var(--finalGapHeight);
+            height: var(--finalBarHeight);
+        }
+    }
+}
+
+#loading-animation.base-element{
+    --containerWidth: 40vw;
+    --containerHeight: 40vh;
+
+    position: absolute;
+    top:50%;
+    left:50%;
+    translate: -50% -50%;
+
+}
+
+#loading-animation.add-account{
+    --containerWidth: 30vw;
+    --containerHeight: 30vh;
+
+    div {
+        background-color: black;
+     
+    }
+
+}
+
+#loading-animation.account{
+    --containerWidth: 100px;
+    --containerHeight: 60px;
+
+}
+
+
+#loading-animation.login-and-register{
+    --containerWidth: 100px;
+    --containerHeight: 60px;
+
+    div {
+        background-color: black;
+     
+    }
+
+}

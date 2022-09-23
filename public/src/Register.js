@@ -1,6 +1,8 @@
 import React, { useState} from "react";
 import isEmail from 'validator/lib/isEmail';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import LoadingAnimation from "./Loading-animation";
+
 
 
 const Register = ({ postData, loginUser }) => {
@@ -16,28 +18,24 @@ const Register = ({ postData, loginUser }) => {
     const [usernameErrorServer, setUsernameErrorServer] = useState(false);
     const [emailErrorServer, setEmailErrorServer] = useState(false);
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [errorLabelStyle, setErrorLabelStyle] = useState({color:"black",fontWeight:"normal"});
+    const [errorLabelStyle, setErrorLabelStyle] = useState({color:"black"});
+    const [componentToDisplay, setComponentToDisplay] = useState("submit-button");
     const navigate = useNavigate();
 
     const handleChange = (e) => {
 
         if(e.target.name === "username"){
             setUsername(e.target.value);
-            setUsernameErrorServer(false);
-
-            if(e.target.value.length >= 6){
-                setUsernameErrorClient(false);
-            }
+            !usernameErrorServer && setUsernameErrorServer(false);
 
             e.target.value.length >= 6 
             ? setUsernameErrorClient(false) 
             : setUsernameErrorClient(true);
 
-
         }
         else if(e.target.name === "email"){
             setEmail(e.target.value);
-            setEmailErrorServer(false);
+            !emailErrorServer && setEmailErrorServer(false);
 
             if(formSubmitted){
                 isEmail(e.target.value) 
@@ -98,8 +96,11 @@ const Register = ({ postData, loginUser }) => {
 
     const submitForm = async(e) => {
         e.preventDefault();
-        setErrorLabelStyle({color:"red", fontWeight:"bold"});
-        setFormSubmitted(true);
+        if(!formSubmitted){
+            setFormSubmitted(true);
+            setErrorLabelStyle({color:"red"});
+        }
+
         !isEmail(email) && setEmailErrorClient(true);
         password !== confirmPassword && setConfirmPasswordErrorClient(true);
 
@@ -111,6 +112,7 @@ const Register = ({ postData, loginUser }) => {
         }
   
         try{
+            setComponentToDisplay("loading");
             const response = await postData("user/register",{
                 username,
                 email,
@@ -118,11 +120,13 @@ const Register = ({ postData, loginUser }) => {
             });
                 
             if(!response.ok){
-                const error = await response.json();
-                throw {
-                    ...error,
-                    status:response.status
-                };
+                if(response.status === 409){
+                    const error = await response.json();
+                    error.username && setUsernameErrorServer(true);
+                    error.email && setEmailErrorServer(true);
+                    return setComponentToDisplay("submit-button");
+                }
+                throw new Error(`Server responded with status code: ${response.status}`);
             } 
             const user = await response.json();
             loginUser(user);
@@ -130,25 +134,30 @@ const Register = ({ postData, loginUser }) => {
           
 
         }catch(error){
-            if(error.status === 500){
-                console.error("internal server error");
-            }
-            else if(error.status === 409){
-                error.username && setUsernameErrorServer(true);
-                error.email && setEmailErrorServer(true);
-            }
-            else{
-                console.error(error)
-            }
-
+            console.error(error)
+            setComponentToDisplay("error");
+            setTimeout(()=>setComponentToDisplay("submit-button"), 4000);
+            
         }
 
     };
 
+    const updateDOM = () => {
+
+        switch(componentToDisplay){
+            case "submit-button":
+                return <button type="submit" >Register</button>;
+            case "loading":
+                return <LoadingAnimation className="login-and-register" />;
+            case "error":
+                return <p className="error-message">An error occurred, please try again</p>;
+        }
+    }
+
     return(
         <div id = "register">
             <form onSubmit={submitForm}>
-                <div className="section">
+                <div>
                     <label >Username</label> 
                     <input type="text"  name="username" onChange={handleChange} />
                     <div className="error-container">    
@@ -161,7 +170,7 @@ const Register = ({ postData, loginUser }) => {
                     </div>
                 </div>
         
-                <div className="section">
+                <div>
                     <label >Email</label>
                     <input type="text" name="email" onChange={handleChange} /> 
                     <div className="error-container"> 
@@ -174,7 +183,7 @@ const Register = ({ postData, loginUser }) => {
                     </div>
                 </div>
             
-                <div className="section">
+                <div>
                     <label >Password</label>
                     <input type="password"  name="password" onChange={handleChange} /> 
                     <div className="error-container"> 
@@ -187,7 +196,7 @@ const Register = ({ postData, loginUser }) => {
                     </div>
                 </div>
 
-                <div className="section">
+                <div>
                     <label  >Confirm Password</label>
                     <input type="password"  name="confirmPassword" onChange={handleChange} />
                     <div className="error-container"> 
@@ -196,11 +205,10 @@ const Register = ({ postData, loginUser }) => {
                         </label>
                     </div>
                 </div>
-
-       
-                <button type="submit" >Register</button>
-              
+                {updateDOM()}
             </form>
+
+            <p>Already have an account? Click <Link to="/user/login">here</Link> to login</p>
         </div>
         
     )

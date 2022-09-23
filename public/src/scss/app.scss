@@ -1,55 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+:root{
+    --Fmin:16px;
+    --deltaF:calc(24 - 16);
+    --Smin:365px;
+    --deltaS:calc(1920 - 365);
+    font-size:calc(var(--Fmin) + var(--deltaF) * (100vw - var(--Smin)) / var(--deltaS));
+}
+
 *{
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    margin:0px;
+    margin:0;
+    padding:0;
 
 }
 
 #login, #register, #profile{
-    height:100vh;
+    position:relative;
+    top:4em;
+    height:90vh;
     display:flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size:1.5rem;
     --border-radius: 0.2em;
-
+  
     form{
         background-color: rgb(170, 170, 170);
         padding:1.5em;
         border-radius: var(--border-radius);
-        border:2px solid black;
-
-        .section{
-            width:12em;
-        }
-
+        border:1px solid black;
+        width:16em;
+    
         label, input{
+
             display:block;
         }
 
 
         input{
             width:100%;
-            font-size:0.8em;
+            font-size:0.9em;
         }
 
         input:focus{
             outline:none;
-            box-shadow:0 0 10px black;
         }
         
         .error-container{
-            height:2.5em;
+            height:2.75em;
 
             label{
-                font-size: 0.7em;
+                font-size: 0.75em;
+                font-weight:bold;
             }
 
             .error{
                 color:red;
-                font-weight:bold;
+                font-weight: bold;
             }
 
 
@@ -57,21 +66,36 @@
 
  
         button{
-            font-size:1.2em;
+            font-size:1.1em;
             padding:0.5em;
             border-radius: var(--border-radius);
-            border-style:solid;
+            border:1px solid black;
             display:block;
             margin: 0 auto;
             
             &:hover{
                 background-color: black;
                 color:white;
-                border-color:black;
             }
         }
+
+        .error-message{
+            color:red;
+            text-align: center;
+        }
     }
+
+    p{
+        margin-top: 0.5em;
+        font-weight: bold;
+    }
+
+
     
 }
+
+
+
+
 
 

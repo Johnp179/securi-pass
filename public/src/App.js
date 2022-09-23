@@ -3,9 +3,6 @@ import {
     BrowserRouter,
     Routes,
     Route,
-    useNavigate,
-    useLocation,
-
   } from "react-router-dom";
 import "./scss/app.scss";
 import BaseElement from "./Base-element.js";
@@ -15,6 +12,7 @@ import Login from "./Login.js";
 import Register from "./Register.js";
 import Vault from "./Vault.js";
 import Profile from "./Profile.js";
+import ErrorPage from "./Error-page";
 
 const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3000/" : "/";
 
@@ -72,13 +70,12 @@ const App = () => {
 
         try{
             const response = await getData("user/check-for-logged-in-user");
-            if(!response.ok)throw {status:response.status};
+            if(!response.ok) throw new Error(`Server responded with status code: ${response.status}`);
             const user = await response.json();
             loginUser(user);
             return true;
 
         }catch(error){
-            if(error.status === 403) return false;
             console.error(error);
             return false;
          
@@ -99,6 +96,7 @@ const App = () => {
             setUsername("");
             setEmail("");
             setUserID("");
+            setLoggedIn(false);
            
             
         }catch(error){
@@ -119,6 +117,7 @@ const App = () => {
                         <Route path="profile" element={<Profile  username={username} email={email}      />} />
                         <Route path="vault" element={<Vault getData={getData} postData={postData} deleteData={deleteData} updateData={updateData} userID={userID} />} />
                     </Route>
+                    <Route path="*" element={<ErrorPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

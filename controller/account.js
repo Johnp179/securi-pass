@@ -8,12 +8,34 @@ const {
     createDecipheriv,
   } = require('crypto');
 const algorithm = 'aes-192-cbc';
-const key = scryptSync(process.env.password, 'salt', 24); //key
-const iv = scryptSync("lkfgdgjdfgsg456y64j", 'salt', 16); // Initialization vector.
+const key = scryptSync(process.env.encryptionKeyBase, process.env.salt, 24); //key
+const iv = scryptSync(process.env.ivBase, process.env.salt, 16); // Initialization vector.
 
 
-router.get("/get-all/:id", async(req, res)=>{
+router.get("/get-all", async(req, res)=>{
+    try{
+        let accounts = await Account.find({});
+        accounts = accounts.map(account=>{
+            const decipher = createDecipheriv(algorithm, key, iv);
+            let decryptedPassword = decipher.update(account.password, 'hex', 'utf8');
+            decryptedPassword += decipher.final('utf8');
+            return {
+                ...account.toObject(),
+                password: decryptedPassword
+            };
+        }) 
+     
+        res.send(accounts);
+    }catch(e){
+        res.status(500).end();
+        console.error(e);
 
+    }
+  
+})
+
+
+router.get("/get-all-by-user/:id", auth, async(req, res)=>{
     try{
         let accounts = await Account.find({userID:req.params.id});
         accounts = accounts.map(account=>{
@@ -37,7 +59,7 @@ router.get("/get-all/:id", async(req, res)=>{
 })
 
 
-router.post("/add/:id", async(req, res)=>{
+router.post("/add/:id", auth, async(req, res)=>{
 
     try{
         const cipher = createCipheriv(algorithm, key, iv);
@@ -49,8 +71,9 @@ router.post("/add/:id", async(req, res)=>{
             userID:req.params.id
         });
 
-    const doc = await account.save();
-    res.status(201).send(doc);
+        const doc = await account.save();
+        res.status(201).send(doc);
+     
     }catch(e){
         res.status(500).end();
         console.error(e);
@@ -59,7 +82,7 @@ router.post("/add/:id", async(req, res)=>{
 })
 
 
-router.put("/update/:id", async(req, res)=>{
+router.put("/update/:id", auth, async(req, res)=>{
 
     try{
         const cipher = createCipheriv(algorithm, key, iv);
@@ -72,7 +95,6 @@ router.put("/update/:id", async(req, res)=>{
 
         const doc =  await Account.findOneAndUpdate({_id: req.params.id}, updatedAccount);
         doc ? res.status(200).send(doc) : res.status(404).end();
-
     }catch(e){
         res.status(500).end();
         console.error(e);
@@ -80,17 +102,29 @@ router.put("/update/:id", async(req, res)=>{
   })
   
   
-router.delete("/delete/:id", async(req, res)=>{
+router.delete("/delete/:id", auth, async(req, res)=>{
     try{
         const doc = await Account.findOneAndDelete({_id:req.params.id});
         doc ? res.status(200).send(doc) : res.status(404).end();
-
+      
     }catch(e){
         res.status(500).end();
         console.error(e);
     }
 
 })
+
+router.delete("/delete-all", async(req, res) => {
+
+    try{
+        const deletedCount = await Account.deleteMany({});
+        res.send(deletedCount);
+    }catch(e){
+        res.status(500).end();
+        console.error(e);
+    }
+
+});
   
 
 

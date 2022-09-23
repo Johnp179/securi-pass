@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import "./scss/nav.scss"
@@ -8,18 +8,6 @@ const Nav = ({ loggedIn, logoutUser}) => {
 
     const [displayMobileMenu, setDisplayMobileMenu] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const loggedOutButtonClick = () => {
-        location.pathname.includes("login") ? navigate("/user/register") : navigate("/user/login");
-    };
-
-
-    const loggedOutButton = (
-        <button id="logged-out-button" onClick={loggedOutButtonClick}>
-            {location.pathname.includes("login") ? "Register" : "Login"}
-        </button>
-    );
 
     const logout = () =>{
         logoutUser();
@@ -31,8 +19,10 @@ const Nav = ({ loggedIn, logoutUser}) => {
                 <div id="desktop-menu">
                     <button className="user-icon"><FontAwesomeIcon icon={solid('user')} /> </button>
                     <div id="dropdown">
+                        <div onClick={()=>navigate("/user/vault")}>Vault</div>
                         <div onClick={()=>navigate("/user/profile")}>Profile</div>
                         <div onClick={logout}>logout</div>
+                  
                     </div>
                 </div> 
     
@@ -47,10 +37,23 @@ const Nav = ({ loggedIn, logoutUser}) => {
             
     );
 
+    const profileButtonClick = () => {
+        navigate("/user/profile");
+        setDisplayMobileMenu(false);
+
+    }
+
+    const vaultButtonClick = () => {
+        navigate("/user/vault");
+        setDisplayMobileMenu(false);
+
+    }
+
 
     const mobileMenu = (
         <div id="mobile-menu">
-            <div onClick={()=>navigate("/user/profile") }>Profile</div>
+            <div onClick={profileButtonClick}>Profile</div>
+            <div onClick={vaultButtonClick}>Vault</div>
             <div onClick={logout}>Logout</div>
         </div>
     );
@@ -59,7 +62,7 @@ const Nav = ({ loggedIn, logoutUser}) => {
     return(
         <div id = "nav">
             <h1>SecuriPass</h1>
-            {loggedIn ? loggedInMenu :loggedOutButton}
+            {loggedIn && loggedInMenu}
             {displayMobileMenu && mobileMenu}   
         </div>
     )
